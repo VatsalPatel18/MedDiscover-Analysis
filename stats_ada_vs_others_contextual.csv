@@ -1,0 +1,26 @@
+metric,model_a,model_b,p_adj,kw_p
+faithfulness,Ada + gpt4o,MedCPT + gpt4o,1.0,2.240221339373061e-14
+faithfulness,Ada + gpt4o,MedCPT + gpt4.1-nano,1.0,2.240221339373061e-14
+faithfulness,Ada + gpt4o,MedCPT + gpt4.1-mini,1.0,2.240221339373061e-14
+faithfulness,Ada + gpt4o,notebookLM,0.003104236792567337,2.240221339373061e-14
+faithfulness,Ada + gpt4o,notebookLM-specific,0.003104236792567337,2.240221339373061e-14
+answer_correctness,Ada + gpt4o,MedCPT + gpt4o,1.0,2.678299618356569e-08
+answer_correctness,Ada + gpt4o,MedCPT + gpt4.1-nano,0.09298034088760526,2.678299618356569e-08
+answer_correctness,Ada + gpt4o,MedCPT + gpt4.1-mini,0.003024859618566205,2.678299618356569e-08
+answer_correctness,Ada + gpt4o,notebookLM,0.011099894083198204,2.678299618356569e-08
+answer_correctness,Ada + gpt4o,notebookLM-specific,0.0026238805381280208,2.678299618356569e-08
+context_recall,Ada + gpt4o,MedCPT + gpt4o,1.0,2.0720018536794664e-15
+context_recall,Ada + gpt4o,MedCPT + gpt4.1-nano,1.0,2.0720018536794664e-15
+context_recall,Ada + gpt4o,MedCPT + gpt4.1-mini,1.0,2.0720018536794664e-15
+context_recall,Ada + gpt4o,notebookLM,0.00397699455650347,2.0720018536794664e-15
+context_recall,Ada + gpt4o,notebookLM-specific,0.00397699455650347,2.0720018536794664e-15
+context_precision,Ada + gpt4o,MedCPT + gpt4o,1.0,5.021625443488879e-19
+context_precision,Ada + gpt4o,MedCPT + gpt4.1-nano,1.0,5.021625443488879e-19
+context_precision,Ada + gpt4o,MedCPT + gpt4.1-mini,1.0,5.021625443488879e-19
+context_precision,Ada + gpt4o,notebookLM,2.189072074058892e-08,5.021625443488879e-19
+context_precision,Ada + gpt4o,notebookLM-specific,2.189072074058892e-08,5.021625443488879e-19
+answer_relevancy,Ada + gpt4o,MedCPT + gpt4o,1.0,6.6354323165331245e-15
+answer_relevancy,Ada + gpt4o,MedCPT + gpt4.1-nano,1.0,6.6354323165331245e-15
+answer_relevancy,Ada + gpt4o,MedCPT + gpt4.1-mini,1.0,6.6354323165331245e-15
+answer_relevancy,Ada + gpt4o,notebookLM,6.447915026369998e-06,6.6354323165331245e-15
+answer_relevancy,Ada + gpt4o,notebookLM-specific,6.059817820680707e-06,6.6354323165331245e-15

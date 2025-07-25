@@ -1,0 +1,26 @@
+metric,model_a,model_b,p_adj,kw_p
+rouge1,Ada + gpt4o,MedCPT + gpt4o,1.0,2.0034364648273753e-06
+rouge1,Ada + gpt4o,MedCPT + gpt4.1-nano,0.1727944381610179,2.0034364648273753e-06
+rouge1,Ada + gpt4o,MedCPT + gpt4.1-mini,0.07299642302384983,2.0034364648273753e-06
+rouge1,Ada + gpt4o,notebookLM,1.0,2.0034364648273753e-06
+rouge1,Ada + gpt4o,notebookLM-specific,0.004423846984978766,2.0034364648273753e-06
+rouge2,Ada + gpt4o,MedCPT + gpt4o,1.0,1.5211509187573778e-07
+rouge2,Ada + gpt4o,MedCPT + gpt4.1-nano,0.31473778885433157,1.5211509187573778e-07
+rouge2,Ada + gpt4o,MedCPT + gpt4.1-mini,0.09232748265104082,1.5211509187573778e-07
+rouge2,Ada + gpt4o,notebookLM,1.0,1.5211509187573778e-07
+rouge2,Ada + gpt4o,notebookLM-specific,0.003010244445662448,1.5211509187573778e-07
+rougel,Ada + gpt4o,MedCPT + gpt4o,1.0,5.12242252230025e-06
+rougel,Ada + gpt4o,MedCPT + gpt4.1-nano,0.26172684785106326,5.12242252230025e-06
+rougel,Ada + gpt4o,MedCPT + gpt4.1-mini,0.10408103841812331,5.12242252230025e-06
+rougel,Ada + gpt4o,notebookLM,1.0,5.12242252230025e-06
+rougel,Ada + gpt4o,notebookLM-specific,0.007844154324212631,5.12242252230025e-06
+bleu,Ada + gpt4o,MedCPT + gpt4o,1.0,5.924132780715223e-06
+bleu,Ada + gpt4o,MedCPT + gpt4.1-nano,0.6831109473294484,5.924132780715223e-06
+bleu,Ada + gpt4o,MedCPT + gpt4.1-mini,0.03492296141985578,5.924132780715223e-06
+bleu,Ada + gpt4o,notebookLM,0.4461797065602766,5.924132780715223e-06
+bleu,Ada + gpt4o,notebookLM-specific,0.6485650766111659,5.924132780715223e-06
+Accuracy,Ada + gpt4o,MedCPT + gpt4o,1.0,2.97054796432141e-08
+Accuracy,Ada + gpt4o,MedCPT + gpt4.1-nano,0.24518748667604165,2.97054796432141e-08
+Accuracy,Ada + gpt4o,MedCPT + gpt4.1-mini,0.09562557143984025,2.97054796432141e-08
+Accuracy,Ada + gpt4o,notebookLM,0.011032803707004487,2.97054796432141e-08
+Accuracy,Ada + gpt4o,notebookLM-specific,0.0032578560349694227,2.97054796432141e-08
