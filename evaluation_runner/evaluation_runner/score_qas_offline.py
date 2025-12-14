@@ -59,6 +59,7 @@ def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: st
                 "answer": [answer],
                 "contexts": [contexts],
                 "ground_truths": [[ground_truth]],
+                "reference": [ground_truth],  # some ragas metrics expect this field
             }
         )
         scores = ragas_evaluate(
