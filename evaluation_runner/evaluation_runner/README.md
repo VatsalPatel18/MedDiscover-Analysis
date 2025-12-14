@@ -24,3 +24,16 @@ Outputs (under `--out_dir`):
 - `per_model/<model>.csv` — one row per question with: `query, gt, ans, retrieved_contexts, rouge1, rouge2, rougeL, bleu, faithfulness, answer_correctness, context_recall, context_precision, answer_relevancy, accuracy, model`
 - `all_models_combined.csv` — concatenation of all per-model rows.
 - `artifacts/index.faiss` and `artifacts/doc_metadata.json` — built index + metadata for reuse.
+
+## Quick start (metrics-only CSV, no retrieved contexts)
+```bash
+python -m evaluation_runner.evaluate_qas_simple \
+  --pdfs /path/to/a.pdf /path/to/b.pdf \
+  --qa_csv /path/to/questions.csv \
+  --embedding_model "MedCPT (GPU Recommended)" \
+  --llm_models gpt-4.1-mini \
+  --k 5 \
+  --out_csv ./eval_outputs/metrics_only.csv \
+  --out_artifacts ./eval_outputs/artifacts
+```
+Outputs a single CSV with: `query, gt, ans, rouge1, rouge2, rougeL, bleu, faithfulness, answer_correctness, context_recall, context_precision, answer_relevancy, accuracy, model`. No contexts are stored. Artifacts (index + metadata) are kept under `--out_artifacts` for reuse/debug.
