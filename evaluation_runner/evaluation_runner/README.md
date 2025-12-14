@@ -37,3 +37,11 @@ python -m evaluation_runner.evaluate_qas_simple \
   --out_artifacts ./eval_outputs/artifacts
 ```
 Outputs a single CSV with: `query, gt, ans, rouge1, rouge2, rougeL, bleu, faithfulness, answer_correctness, context_recall, context_precision, answer_relevancy, accuracy, model`. No contexts are stored. Artifacts (index + metadata) are kept under `--out_artifacts` for reuse/debug.
+
+## Quick start (pure scorer, no retrieval/LLM; optional contexts for ragas)
+```bash
+python -m evaluation_runner.score_qas_offline \
+  --qa_csv /path/to/answers.csv \  # columns: query, gt, ans; optional contexts
+  --out_csv ./eval_outputs/metrics_offline.csv
+```
+Computes ROUGE-1/2/L and BLEU always; ragas metrics (faithfulness, answer_correctness, context_recall, context_precision, answer_relevancy, accuracy) are filled only if a `contexts` column is present (JSON list). Otherwise those are set to None. No embedding, retrieval, or LLM calls are performed.
