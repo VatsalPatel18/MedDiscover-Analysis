@@ -87,6 +87,7 @@ def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: st
 
 
 def parse_contexts(val: Any) -> List[str]:
+    """Accept list/JSON/string; return list of non-empty strings."""
     if val is None or (isinstance(val, float) and pd.isna(val)):
         return []
     if isinstance(val, list):
@@ -97,8 +98,7 @@ def parse_contexts(val: Any) -> List[str]:
             return [str(x) for x in parsed if x]
     except Exception:
         pass
-    # Fallback: treat as single string
-    return [str(val)]
+    return [str(val)] if str(val).strip() else []
 
 
 def run(args):
@@ -106,6 +106,9 @@ def run(args):
     required = {"query", "gt", "ans"}
     if not required.issubset(df.columns):
         raise ValueError(f"Input CSV must contain columns {required}; found {df.columns.tolist()}")
+
+    has_contexts_col = "contexts" in df.columns
+    has_context_text = "context_text" in df.columns
 
     rows = []
     for _, r in df.iterrows():
@@ -115,8 +118,10 @@ def run(args):
 
         rouge = evaluate_response(gt, ans)
         contexts = []
-        if "contexts" in r:
+        if has_contexts_col:
             contexts = parse_contexts(r["contexts"])
+        elif has_context_text:
+            contexts = parse_contexts(r["context_text"])
         ragas_scores = compute_ragas(query, ans, contexts, gt)
 
         rows.append(
