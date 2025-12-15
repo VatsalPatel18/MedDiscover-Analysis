@@ -98,17 +98,32 @@ def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: st
             llm=RagasOpenAI(model="gpt-4.1-mini"),
             num_workers=1,
         )
+        metrics_dict = {
+            "faithfulness": None,
+            "answer_correctness": None,
+            "context_recall": None,
+            "context_precision": None,
+            "answer_relevancy": None,
+        }
         if hasattr(scores, "to_pandas"):
-            # new ragas returns an EvaluationResult
-            pd_scores = scores.to_pandas().iloc[0].to_dict()
+            df = scores.to_pandas()
+            name_col = "metric" if "metric" in df.columns else "metrics"
+            score_col = "score" if "score" in df.columns else "value"
+            for _, row in df.iterrows():
+                mname = row.get(name_col)
+                mval = row.get(score_col)
+                if mname in metrics_dict:
+                    metrics_dict[mname] = float(mval)
         elif hasattr(scores, "items"):
-            pd_scores = {k: float(v) for k, v in scores.items()}
-        else:
-            pd_scores = {}
-        pd_scores["accuracy"] = (
-            float(pd_scores["answer_correctness"] > 0.5) if pd_scores.get("answer_correctness") is not None else None
+            for k, v in scores.items():
+                if k in metrics_dict:
+                    metrics_dict[k] = float(v)
+        metrics_dict["accuracy"] = (
+            float(metrics_dict["answer_correctness"] > 0.5)
+            if metrics_dict.get("answer_correctness") is not None
+            else None
         )
-        return pd_scores
+        return metrics_dict
     except Exception as e:
         print(f"[warn] ragas evaluation failed ({e}); setting ragas metrics to None")
         return {
