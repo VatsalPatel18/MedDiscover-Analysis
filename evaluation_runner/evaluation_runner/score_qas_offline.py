@@ -35,6 +35,7 @@ try:
         context_precision as ragas_context_precision,
         answer_relevancy as ragas_answer_relevancy,
     )
+    from ragas.llms import OpenAI as RagasOpenAI
     from datasets import Dataset
 
     HAS_RAGAS = True
@@ -42,8 +43,31 @@ except Exception:
     HAS_RAGAS = False
 
 
-def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: str) -> Dict[str, Any]:
-    if not HAS_RAGAS or not contexts:
+def ensure_openai_key():
+    if os.environ.get("OPENAI_API_KEY"):
+        return True
+    key_path = REPO_ROOT / "openai_key.txt"
+    if key_path.exists():
+        try:
+            os.environ["OPENAI_API_KEY"] = key_path.read_text().strip()
+            return True
+        except Exception:
+            return False
+    return False
+
+
+def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: str, skip_ragas: bool) -> Dict[str, Any]:
+    if skip_ragas or not HAS_RAGAS or not contexts:
+        return {
+            "faithfulness": None,
+            "answer_correctness": None,
+            "context_recall": None,
+            "context_precision": None,
+            "answer_relevancy": None,
+            "accuracy": None,
+        }
+    if not ensure_openai_key():
+        print("[warn] OPENAI_API_KEY not set and openai_key.txt missing; skipping ragas.")
         return {
             "faithfulness": None,
             "answer_correctness": None,
@@ -71,10 +95,20 @@ def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: st
                 ragas_context_precision,
                 ragas_answer_relevancy,
             ],
+            llm=RagasOpenAI(model="gpt-4o-mini"),
+            num_workers=1,
         )
-        s = {k: float(v) for k, v in scores.items()}
-        s["accuracy"] = float(s["answer_correctness"] > 0.5) if s.get("answer_correctness") is not None else None
-        return s
+        if hasattr(scores, "to_pandas"):
+            # new ragas returns an EvaluationResult
+            pd_scores = scores.to_pandas().iloc[0].to_dict()
+        elif hasattr(scores, "items"):
+            pd_scores = {k: float(v) for k, v in scores.items()}
+        else:
+            pd_scores = {}
+        pd_scores["accuracy"] = (
+            float(pd_scores["answer_correctness"] > 0.5) if pd_scores.get("answer_correctness") is not None else None
+        )
+        return pd_scores
     except Exception as e:
         print(f"[warn] ragas evaluation failed ({e}); setting ragas metrics to None")
         return {
@@ -111,6 +145,7 @@ def run(args):
     has_contexts_col = "contexts" in df.columns
     has_context_text = "context_text" in df.columns
 
+    skip_ragas = args.skip_ragas or not HAS_RAGAS
     rows = []
     for _, r in df.iterrows():
         query = str(r["query"])
@@ -123,7 +158,7 @@ def run(args):
             contexts = parse_contexts(r["contexts"])
         elif has_context_text:
             contexts = parse_contexts(r["context_text"])
-        ragas_scores = compute_ragas(query, ans, contexts, gt)
+        ragas_scores = compute_ragas(query, ans, contexts, gt, skip_ragas)
 
         rows.append(
             {
@@ -142,9 +177,10 @@ def run(args):
 
 
 def parse_args():
-    ap = argparse.ArgumentParser(description="Pure scorer for QA CSVs (no retrieval/LLM).")
+    ap = argparse.ArgumentParser(description="Pure scorer for QA CSVs (no retrieval/LLM generation).")
     ap.add_argument("--qa_csv", required=True, help="Input CSV with columns query,gt,ans; optional contexts.")
     ap.add_argument("--out_csv", default="./eval_outputs/metrics_offline.csv", help="Output CSV path.")
+    ap.add_argument("--skip-ragas", action="store_true", help="Skip ragas metrics (only ROUGE/BLEU).")
     return ap.parse_args()
 
 

@@ -43,5 +43,6 @@ Outputs a single CSV with: `query, gt, ans, rouge1, rouge2, rougeL, bleu, faithf
 python -m evaluation_runner.score_qas_offline \
   --qa_csv /path/to/answers.csv \  # columns: query, gt, ans; optional contexts
   --out_csv ./eval_outputs/metrics_offline.csv
+  # add --skip-ragas to disable ragas metrics (ROUGE/BLEU only)
 ```
-Computes ROUGE-1/2/L and BLEU always; ragas metrics (faithfulness, answer_correctness, context_recall, context_precision, answer_relevancy, accuracy) are filled only if a `contexts` column is present (JSON list). Otherwise those are set to None. No embedding, retrieval, or LLM calls are performed.
+Computes ROUGE-1/2/L and BLEU always. Ragas metrics (faithfulness, answer_correctness, context_recall, context_precision, answer_relevancy, accuracy) require a `contexts` column (JSON list or context_text) and an OpenAI key; set `OPENAI_API_KEY` or place it in `openai_key.txt` at repo root. Use `--skip-ragas` to avoid ragas (no API calls).
