@@ -95,7 +95,7 @@ def compute_ragas(query: str, answer: str, contexts: List[str], ground_truth: st
                 ragas_context_precision,
                 ragas_answer_relevancy,
             ],
-            llm=RagasOpenAI(model="gpt-4o-mini"),
+            llm=RagasOpenAI(model="gpt-4.1-mini"),
             num_workers=1,
         )
         if hasattr(scores, "to_pandas"):
